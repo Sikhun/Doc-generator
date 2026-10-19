@@ -8,7 +8,6 @@ let docLang = localStorage.getItem('it_doc_lang') || 'th';
 
 const tr = s => uiLang === 'en' ? (UI_EN[s] || s) : s;
 
-// ฟังก์ชันเริ่มต้นทำงานทันทีที่โหลดหน้าเว็บเสร็จ
 window.addEventListener('DOMContentLoaded', () => {
     loadShopInfo();
     loadSavedCustomers();
@@ -179,9 +178,9 @@ function setDocType(type) {
         const btn = document.getElementById(`tab-${t}`);
         if (btn) {
             if (t === type) {
-                btn.className = "flex-1 md:flex-none px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all bg-blue-600 text-white shadow-md shadow-blue-600/30";
+                btn.className = "w-full px-2 py-2 text-xs font-semibold rounded-lg transition-all bg-blue-600 text-white shadow-md text-center truncate";
             } else {
-                btn.className = "flex-1 md:flex-none px-3.5 py-1.5 text-xs font-medium rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-900";
+                btn.className = "w-full px-2 py-2 text-xs font-medium rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-800 text-center truncate";
             }
         }
     });

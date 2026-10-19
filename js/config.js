@@ -34,7 +34,7 @@ const SAMPLE_ITEMS = {
 const UI_EN = {
     '📄 ใบเสนอราคา (QT)':'📄 Quotation (QT)','🚚 ใบส่งของ (DO)':'🚚 Delivery Order (DO)','🧾 ใบเสร็จ/รับประกัน (RE)':'🧾 Receipt/Warranty (RE)',
     '📝 กรอกข้อมูลเอกสาร':'📝 Fill in details','👁️ ดูตัวอย่าง A4 (':'👁️ A4 Preview (',
-    '🌐 ภาษาของเอกสาร':'🌐 Document language','💾 บันทึกร้านค้า':'💾 Save shop','⚡ ใส่ตัวอย่าง':'⚡ Load sample','🗑️ ล้างข้อมูล':'🗑️ Clear',
+    '🌐 ภาษาของเอกสาร':'🌐 Document language','💾 บันทึกร้านค้า':'💾 Save shop','⚡ ตัวอย่าง':'⚡ Sample','🗑️ ล้างข้อมูล':'🗑️ Clear',
     '1. ข้อมูลร้านค้า / ผู้ให้บริการ':'1. Shop / Service provider','บันทึกอัตโนมัติ':'Auto-save','ชื่อร้าน / บริษัท':'Shop / Company name',
     'ที่อยู่ & เบอร์โทรศัพท์':'Address & phone','เลขผู้เสียภาษี':'Tax ID','บัญชีธนาคาร':'Bank account','ถ้ามี':'If any','ธนาคาร / เลขบัญชี':'Bank / account no.',
     '2. ข้อมูลลูกค้า & เอกสาร':'2. Customer & document','เลขที่เอกสาร':'Document no.','วันที่ออกเอกสาร':'Issue date','ชื่อลูกค้า / บริษัท':'Customer / company name',

@@ -6,18 +6,18 @@
     font-family: 'Kanit', sans-serif;
 }
 
-/* Strict A4 Preview Frame Layout */
+/* Strict A4 Preview Frame Layout (ขนาดพอดีตา ไม่ใหญ่เกินไป) */
 .a4-page {
-    width: 210mm !important;
-    min-width: 210mm !important;
-    max-width: 210mm !important;
-    min-height: 297mm !important;
-    height: 297mm !important;
-    background: #ffffff !important;
-    color: #0f172a !important;
-    margin: 0 auto !important;
-    padding: 12mm 15mm !important;
-    box-sizing: border-box !important;
+    width: 210mm;
+    min-width: 210mm;
+    max-width: 210mm;
+    min-height: 297mm;
+    height: 297mm;
+    background: #ffffff;
+    color: #0f172a;
+    margin: 0 auto;
+    padding: 12mm 15mm;
+    box-sizing: border-box;
     transform-origin: top center;
     transition: transform 0.2s ease-in-out;
     position: relative;

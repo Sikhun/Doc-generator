@@ -1,4 +1,3 @@
-// ฟังก์ชันแปลงตัวเลขเป็นบาทถ้วนภาษาไทย
 function bahtText(num) {
     if (isNaN(num) || num === 0) return 'ศูนย์บาทถ้วน';
     if (num < 0) return 'ลบ ' + bahtText(Math.abs(num));
@@ -36,7 +35,6 @@ function bahtText(num) {
     return text;
 }
 
-// ฟังก์ชันแปลงตัวเลขเป็นภาษาอังกฤษ
 function enWords(x) {
     const o = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
     const tn = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];

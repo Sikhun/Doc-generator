@@ -35,7 +35,7 @@
                     <button id="uilang-en" onclick="setUILang('en')" class="px-2 py-1 rounded text-slate-400 hover:text-white">EN</button>
                 </div>
                 <button onclick="saveShopInfo()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold transition-all border border-slate-700">💾 บันทึกร้านค้า</button>
-                <button onclick="loadSampleData()" class="px-3 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 rounded-lg text-xs font-semibold transition-all border border-emerald-800/50">⚡ ใส่ตัวอย่าง</button>
+                <button onclick="loadSampleData()" class="px-3 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 rounded-lg text-xs font-semibold transition-all border border-emerald-800/50">⚡ ตัวอย่าง</button>
                 <button onclick="resetCustomerForm()" class="px-3 py-1.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg text-xs font-semibold transition-all border border-red-800/50">🗑️ ล้างข้อมูล</button>
             </div>
         </div>
@@ -53,13 +53,13 @@
         <!-- Left Column: Form Section -->
         <section id="formSection" class="lg:col-span-6 space-y-6">
 
-            <!-- Document Type Selector -->
+            <!-- Document Type Selector (กระจายซ้าย กลาง ขวา) -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
                 <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">ประเภทเอกสารหลัก</label>
-                <div class="flex gap-2">
-                    <button id="tab-QT" onclick="setDocType('QT')" class="flex-1 px-3 py-2 text-xs font-semibold rounded-lg bg-blue-600 text-white shadow-md">ใบเสนอราคา (QT)</button>
-                    <button id="tab-DO" onclick="setDocType('DO')" class="flex-1 px-3 py-2 text-xs font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">ใบส่งของ (DO)</button>
-                    <button id="tab-RE" onclick="setDocType('RE')" class="flex-1 px-3 py-2 text-xs font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">ใบเสร็จ/ประกัน (RE)</button>
+                <div class="grid grid-cols-3 gap-2 w-full">
+                    <button id="tab-QT" onclick="setDocType('QT')" class="w-full px-2 py-2 text-xs font-semibold rounded-lg bg-blue-600 text-white shadow-md text-center truncate">ใบเสนอราคา (QT)</button>
+                    <button id="tab-DO" onclick="setDocType('DO')" class="w-full px-2 py-2 text-xs font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 text-center truncate">ใบส่งของ (DO)</button>
+                    <button id="tab-RE" onclick="setDocType('RE')" class="w-full px-2 py-2 text-xs font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 text-center truncate">ใบเสร็จ/ประกัน (RE)</button>
                 </div>
             </div>
 
@@ -98,7 +98,6 @@
                     <button onclick="saveCurrentCustomer()" class="text-xs text-blue-400 hover:text-blue-300 font-semibold">💾 บันทึกลูกค้า</button>
                 </div>
                 
-                <!-- Saved Customers Dropdown -->
                 <div id="savedCustomersContainer" class="hidden">
                     <select id="savedCustomersSelect" onchange="loadSelectedCustomer()" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 outline-none">
                         <option value="">-- เลือกลูกค้าที่เคยบันทึกไว้ --</option>
@@ -124,9 +123,7 @@
                         <label class="text-slate-400 font-medium">ที่อยู่ / จุดบริการ Onsite / เบอร์โทร</label>
                         <textarea id="custAddress" rows="2" placeholder="ที่อยู่จัดส่ง หรือ จุดรับบริการ Onsite" class="w-full mt-1 p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:border-blue-500 outline-none" oninput="updatePreview()"></textarea>
                     </div>
-                    <div id="metaExtraField">
-                        <!-- Dynamic extra field (Validity / Ref / Warranty) -->
-                    </div>
+                    <div id="metaExtraField"></div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="text-slate-400 font-medium">วิธีชำระเงิน</label>
@@ -154,9 +151,7 @@
                     <button type="button" onclick="addItemRow()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold shadow-md transition-all">+ เพิ่มรายการ</button>
                 </div>
 
-                <div id="itemInputsContainer" class="space-y-3">
-                    <!-- Dynamic Items Rendered Here -->
-                </div>
+                <div id="itemInputsContainer" class="space-y-3"></div>
 
                 <div class="pt-3 border-t border-slate-800 grid grid-cols-2 gap-3 text-xs">
                     <div>
@@ -215,9 +210,7 @@
 
             <!-- A4 Page Container Preview Frame -->
             <div class="w-full overflow-auto bg-slate-950 p-2 flex justify-center border border-slate-800/80 rounded-2xl shadow-inner min-h-[850px]">
-                <div id="documentPrintArea" class="a4-page shadow-2xl p-[12mm_15mm] flex flex-col justify-between">
-                    <!-- Dynamic Document Content -->
-                </div>
+                <div id="documentPrintArea" class="a4-page shadow-2xl flex flex-col justify-between"></div>
             </div>
 
         </section>
@@ -238,7 +231,7 @@
     <!-- Off-screen hidden container for PDF generation engine -->
     <div id="pdfRenderContainer"></div>
 
-    <!-- Custom JS Scripts (Modular Structure) -->
+    <!-- Custom JS Scripts -->
     <script src="js/config.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/app.js"></script>
