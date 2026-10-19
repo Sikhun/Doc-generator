@@ -6,13 +6,13 @@
     font-family: 'Kanit', sans-serif;
 }
 
-/* Strict A4 Preview Frame Layout (ขนาดสัดส่วน A4 จริง 210mm x 297mm พอดีตา) */
+/* Strict A4 Preview Frame Layout - ปรับความสูงให้พอดีกับเนื้อหา ไม่ยืดยาวเกินไป */
 .a4-page {
     width: 210mm;
     min-width: 210mm;
     max-width: 210mm;
     min-height: 297mm;
-    height: 297mm;
+    height: auto;
     background: #ffffff;
     color: #0f172a;
     margin: 0 auto;
@@ -21,7 +21,6 @@
     transform-origin: top center;
     transition: transform 0.2s ease-in-out;
     position: relative;
-    overflow: hidden;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
 }
 
@@ -42,7 +41,8 @@
         border-radius: 0 !important;
         padding: 12mm 15mm !important;
         width: 210mm !important;
-        height: 297mm !important;
+        min-height: 297mm !important;
+        height: auto !important;
         margin: 0 auto !important;
         page-break-after: always;
     }
