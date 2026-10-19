@@ -1,0 +1,75 @@
+* {
+    font-family: 'Sarabun', sans-serif;
+}
+.heading-font {
+    font-family: 'Kanit', sans-serif;
+}
+
+/* Strict A4 Print Styling */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .page-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    .a4-page {
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 12mm 15mm !important;
+        width: 210mm !important;
+        min-height: 297mm !important;
+        margin: 0 auto !important;
+        page-break-after: always;
+    }
+}
+
+/* A4 Frame Preview Layout */
+.a4-page {
+    width: 210mm;
+    min-height: 297mm;
+    background: #ffffff;
+    color: #0f172a;
+    margin: 0 auto;
+    box-sizing: border-box;
+    transform-origin: top center;
+    transition: transform 0.2s ease-in-out;
+    position: relative;
+}
+
+/* Off-screen PDF Render Engine Container */
+#pdfRenderContainer {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    width: 210mm;
+    background: #ffffff;
+    color: #0f172a;
+}
+
+/* Custom Scrollbar for dark theme */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #090d16;
+}
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}
