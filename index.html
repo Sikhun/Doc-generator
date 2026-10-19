@@ -53,7 +53,7 @@
         <!-- Left Column: Form Section -->
         <section id="formSection" class="lg:col-span-6 space-y-6">
 
-            <!-- Document Type Selector (กระจายซ้าย กลาง ขวา) -->
+            <!-- Document Type Selector -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
                 <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">ประเภทเอกสารหลัก</label>
                 <div class="grid grid-cols-3 gap-2 w-full">
@@ -167,8 +167,33 @@
                 <textarea id="customNotes" rows="3" placeholder="ปล่อยว่างไว้เพื่อใช้เงื่อนไขมาตรฐานตามประเภทเอกสาร" class="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white outline-none" oninput="updatePreview()"></textarea>
             </div>
 
-            <!-- Bottom Action Buttons -->
-            <div class="space-y-3 pt-2">
+        </section>
+
+        <!-- Right Column: A4 Live Preview Section & Bottom Actions -->
+        <section id="previewSection" class="hidden lg:flex lg:col-span-6 flex-col items-center space-y-4">
+            
+            <!-- Zoom & Fullscreen Toolbar -->
+            <div class="no-print w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 flex justify-between items-center text-xs shadow-md">
+                <div class="flex items-center gap-2 font-semibold text-slate-300">
+                    <span>👁️ ตัวอย่างเอกสาร A4</span>
+                    <span id="pvCurrentTypeLabel" class="px-2 py-0.5 bg-blue-600 text-white rounded text-[10px]">QT</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <button onclick="adjustZoom(-0.1)" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold flex items-center justify-center">-</button>
+                    <span id="zoomLevelText" class="w-12 text-center text-slate-400 font-mono">100%</span>
+                    <button onclick="adjustZoom(0.1)" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold flex items-center justify-center">+</button>
+                    <button onclick="resetZoom()" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg">Reset</button>
+                    <button onclick="openFullscreenPreview()" class="px-2.5 py-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-800/50 rounded-lg font-semibold ml-2">🔍 ขยายเต็มจอ</button>
+                </div>
+            </div>
+
+            <!-- A4 Page Container Preview Frame (จำลองขนาด A4 สัดส่วนเป๊ะด้วยเกลลี่สเกล) -->
+            <div class="preview-viewport w-full overflow-hidden bg-slate-950 p-2 flex justify-center items-start border border-slate-800/80 rounded-2xl shadow-inner min-h-[750px]">
+                <div id="documentPrintArea" class="a4-page shadow-2xl flex flex-col justify-between"></div>
+            </div>
+
+            <!-- Bottom Action Buttons & Selector (ย้ายมาไว้ใต้ Preview ฝั่งขวาตามต้องการ) -->
+            <div class="no-print w-full space-y-3 pt-2">
                 <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between gap-4">
                     <span class="text-xs font-semibold text-slate-300">ติ๊กเลือกใบที่ต้องการดาวน์โหลด:</span>
                     <div class="flex items-center gap-3 text-xs">
@@ -186,31 +211,6 @@
                         📥 ดาวน์โหลดเอกสาร
                     </button>
                 </div>
-            </div>
-
-        </section>
-
-        <!-- Right Column: A4 Live Preview Section -->
-        <section id="previewSection" class="hidden lg:flex lg:col-span-6 flex-col items-center">
-            
-            <!-- Zoom & Fullscreen Toolbar -->
-            <div class="no-print w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 mb-4 flex justify-between items-center text-xs shadow-md">
-                <div class="flex items-center gap-2 font-semibold text-slate-300">
-                    <span>👁️ ตัวอย่างเอกสาร A4</span>
-                    <span id="pvCurrentTypeLabel" class="px-2 py-0.5 bg-blue-600 text-white rounded text-[10px]">QT</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <button onclick="adjustZoom(-0.1)" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold flex items-center justify-center">-</button>
-                    <span id="zoomLevelText" class="w-12 text-center text-slate-400 font-mono">100%</span>
-                    <button onclick="adjustZoom(0.1)" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold flex items-center justify-center">+</button>
-                    <button onclick="resetZoom()" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg">Reset</button>
-                    <button onclick="openFullscreenPreview()" class="px-2.5 py-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-800/50 rounded-lg font-semibold ml-2">🔍 ขยายเต็มจอ</button>
-                </div>
-            </div>
-
-            <!-- A4 Page Container Preview Frame -->
-            <div class="w-full overflow-auto bg-slate-950 p-2 flex justify-center border border-slate-800/80 rounded-2xl shadow-inner min-h-[850px]">
-                <div id="documentPrintArea" class="a4-page shadow-2xl flex flex-col justify-between"></div>
             </div>
 
         </section>

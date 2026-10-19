@@ -6,7 +6,7 @@
     font-family: 'Kanit', sans-serif;
 }
 
-/* Strict A4 Preview Frame Layout (ขนาดพอดีตา ไม่ใหญ่เกินไป) */
+/* Strict A4 Preview Frame Layout (ขนาดสัดส่วน A4 จริง 210mm x 297mm พอดีตา) */
 .a4-page {
     width: 210mm;
     min-width: 210mm;
