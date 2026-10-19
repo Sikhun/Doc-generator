@@ -1,8 +1,28 @@
 * {
     font-family: 'Sarabun', sans-serif;
+    box-sizing: border-box;
 }
 .heading-font {
     font-family: 'Kanit', sans-serif;
+}
+
+/* Strict A4 Preview Frame Layout */
+.a4-page {
+    width: 210mm !important;
+    min-width: 210mm !important;
+    max-width: 210mm !important;
+    min-height: 297mm !important;
+    height: 297mm !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    margin: 0 auto !important;
+    padding: 12mm 15mm !important;
+    box-sizing: border-box !important;
+    transform-origin: top center;
+    transition: transform 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
 }
 
 /* Strict A4 Print Styling */
@@ -16,36 +36,16 @@
         padding: 0 !important;
         margin: 0 !important;
     }
-    .page-container {
-        padding: 0 !important;
-        margin: 0 !important;
-        max-width: 100% !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }
     .a4-page {
         box-shadow: none !important;
         border: none !important;
         border-radius: 0 !important;
         padding: 12mm 15mm !important;
         width: 210mm !important;
-        min-height: 297mm !important;
+        height: 297mm !important;
         margin: 0 auto !important;
         page-break-after: always;
     }
-}
-
-/* A4 Frame Preview Layout */
-.a4-page {
-    width: 210mm;
-    min-height: 297mm;
-    background: #ffffff;
-    color: #0f172a;
-    margin: 0 auto;
-    box-sizing: border-box;
-    transform-origin: top center;
-    transition: transform 0.2s ease-in-out;
-    position: relative;
 }
 
 /* Off-screen PDF Render Engine Container */
