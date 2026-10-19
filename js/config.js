@@ -1,19 +1,39 @@
-const defaultShop = {
-    name: 'Just IT',
-    address: '31/383 หมู่ 1 ต.รังสิต อ.ธัญบุรี จ.ปทุมธานี 12110\nโทร: 095-465-9446 | Line ID: it234',
-    taxId: '0000000000000',
-    bank: 'Donate กสิกรไทย 235-3-50991-0'
+const SHOP_DEF = {
+    th: {
+        name: 'Just IT Solution',
+        address: '31/383 หมู่ 1 ต.รังสิต อ.ธัญบุรี จ.ปทุมธานี 12110\nโทร: 095-465-9446 | Line ID: it234',
+        taxId: '0000000000000',
+        bank: 'Donate กสิกรไทย 235-3-50991-0'
+    },
+    en: {
+        name: 'Just IT Solution',
+        address: '31/383 Moo 1, Rangsit, Thanyaburi, Pathum Thani 12110\nTel: 095-465-9446 | Line ID: it234',
+        taxId: '0000000000000',
+        bank: 'Donate Kasikornbank 235-3-50991-0'
+    }
 };
 
-const sampleItems = [
-    { title: 'ค่าบริการตรวจเช็กและซ่อม Onsite', detail: 'บริการตรวจเช็กอาการเครื่องดับ / ทำความสะอาดชุด Optical', qty: 1, price: 500 },
-    { title: 'Power Supply 650W 80+ Bronze', detail: 'S/N: PSU8823901 | ประกันศูนย์ 3 ปี', qty: 1, price: 1850 },
-    { title: 'ส่วนลดค่าบริการตรวจเช็ก Onsite', detail: 'หักค่าน้ำมันตรวจเช็กเมื่อตกลงซ่อมเปลี่ยนอะไหล่', qty: 1, price: -500 }
-];
+const SAMPLE_CUST = {
+    th: { name: 'คุณสมชาย (บริษัท ไอทีเน็ต จำกัด)', addr: '99/9 ถนนวิภาวดีรังสิต แขวงจอมพล เขตจตุจักร กรุงเทพฯ 10900' },
+    en: { name: 'Mr. Somchai (ITNet Co., Ltd.)', addr: '99/9 Vibhavadi Rangsit Rd, Chom Phon, Chatuchak, Bangkok 10900' }
+};
+
+const SAMPLE_ITEMS = {
+    th: [
+        { title: 'ค่าบริการตรวจเช็กและซ่อม Onsite', detail: 'บริการตรวจเช็กอาการเครื่องดับ / ทำความสะอาดชุด Optical', qty: 1, price: 500 },
+        { title: 'Power Supply 650W 80+ Bronze', detail: 'S/N: PSU8823901 | ประกันศูนย์ 3 ปี', qty: 1, price: 1850 },
+        { title: 'ส่วนลดค่าบริการตรวจเช็ก Onsite', detail: 'หักค่าน้ำมันตรวจเช็กเมื่อตกลงซ่อมเปลี่ยนอะไหล่', qty: 1, price: -500 }
+    ],
+    en: [
+        { title: 'Onsite Inspection & Repair Service', detail: 'System diagnostic / Optical cleaning', qty: 1, price: 500 },
+        { title: 'Power Supply 650W 80+ Bronze', detail: 'S/N: PSU8823901 | 3 Years Warranty', qty: 1, price: 1850 },
+        { title: 'Onsite Service Discount', detail: 'Fuel discount upon repair confirmation', qty: 1, price: -500 }
+    ]
+};
 
 const UI_EN = {
     '📄 ใบเสนอราคา (QT)':'📄 Quotation (QT)','🚚 ใบส่งของ (DO)':'🚚 Delivery Order (DO)','🧾 ใบเสร็จ/รับประกัน (RE)':'🧾 Receipt/Warranty (RE)',
-    '📝 1. กรอกข้อมูลเอกสาร':'📝 1. Fill in details','👁️ 2. ดูตัวอย่าง A4 (':'👁️ 2. A4 Preview (',
+    '📝 กรอกข้อมูลเอกสาร':'📝 Fill in details','👁️ ดูตัวอย่าง A4 (':'👁️ A4 Preview (',
     '🌐 ภาษาของเอกสาร':'🌐 Document language','💾 บันทึกร้านค้า':'💾 Save shop','⚡ ใส่ตัวอย่าง':'⚡ Load sample','🗑️ ล้างข้อมูล':'🗑️ Clear',
     '1. ข้อมูลร้านค้า / ผู้ให้บริการ':'1. Shop / Service provider','บันทึกอัตโนมัติ':'Auto-save','ชื่อร้าน / บริษัท':'Shop / Company name',
     'ที่อยู่ & เบอร์โทรศัพท์':'Address & phone','เลขผู้เสียภาษี':'Tax ID','บัญชีธนาคาร':'Bank account','ถ้ามี':'If any','ธนาคาร / เลขบัญชี':'Bank / account no.',
