@@ -19,7 +19,30 @@ window.addEventListener('DOMContentLoaded', () => {
     setDocType('QT');
     styleLang();
     updateDownloadButtonText();
+
+    // 💡 เรียก autoFitZoom() แทน
+    autoFitZoom();
 });
+
+function autoFitZoom() {
+    const viewport = document.querySelector('.preview-viewport');
+    if (viewport) {
+        // ล็อกค่าสเกลเริ่มต้นตายตัวไว้ที่ 80% (0.8) เลยทันที
+        zoomScale = 0.8; 
+        applyZoom();
+    }
+}
+function applyZoom() {
+    const page = document.getElementById('documentPrintArea');
+    if (page) {
+        page.style.transform = `scale(${zoomScale})`;
+        page.style.transformOrigin = 'top center';
+    }
+    const zoomText = document.getElementById('zoomLevelText');
+    if (zoomText) {
+        zoomText.innerText = `${Math.round(zoomScale * 100)}%`;
+    }
+}
 
 function applyUI() {
     const skip = '#documentPrintArea,#pdfRenderContainer,#modalA4Container,script,style';
@@ -345,32 +368,18 @@ function buildDocumentHTML(type) {
             subtotal += lineTotal;
             const isNegative = lineTotal < 0;
             rowsHTML += `
-                <tr style="border-bottom: 1px solid #e2e8f0; height: 26px;">
-                    <td style="padding: 3px 6px; text-align: center; border-right: 1px solid #e2e8f0; border-left: 1px solid #e2e8f0;">${idx + 1}</td>
-                    <td style="padding: 3px 8px; border-right: 1px solid #e2e8f0;">
-                        <div style="font-weight: 700; color: ${isNegative ? '#dc2626' : '#0f172a'}; line-height: 1.1;">${item.title || '-'}</div>
-                        ${item.detail ? `<div style="font-size: 9px; color: #64748b; margin-top: 1px;">${item.detail}</div>` : ''}
+                <tr style="border-bottom: 1px solid #cbd5e1;">
+                    <td style="padding: 6px 4px; text-align: center; vertical-align: top; width: 6%;">${idx + 1}</td>
+                    <td style="padding: 6px 4px; vertical-align: top; width: 48%;">
+                        <div style="font-weight: 700; color: ${isNegative ? '#dc2626' : '#0f172a'};">${item.title || '-'}</div>
+                        ${item.detail ? `<div style="font-size: 8pt; color: #475569; margin-top: 1px; white-space: pre-line;">${item.detail}</div>` : ''}
                     </td>
-                    <td style="padding: 3px 6px; text-align: center; border-right: 1px solid #e2e8f0;">${item.qty || 0}</td>
-                    <td style="padding: 3px 8px; text-align: right; border-right: 1px solid #e2e8f0; color: ${isNegative ? '#dc2626' : '#0f172a'};">${typeof formatMoney === 'function' ? formatMoney(item.price || 0) : item.price}</td>
-                    <td style="padding: 3px 8px; text-align: right; border-right: 1px solid #e2e8f0; font-weight: 600; color: ${isNegative ? '#dc2626' : '#0f172a'};">${typeof formatMoney === 'function' ? formatMoney(lineTotal) : lineTotal}</td>
+                    <td style="padding: 6px 4px; text-align: center; vertical-align: top; width: 10%;">${item.qty || 0}</td>
+                    <td style="padding: 6px 4px; text-align: right; vertical-align: top; width: 18%; color: ${isNegative ? '#dc2626' : '#0f172a'};">${typeof formatMoney === 'function' ? formatMoney(item.price || 0) : item.price}</td>
+                    <td style="padding: 6px 4px; text-align: right; vertical-align: top; width: 18%; font-weight: 600; color: ${isNegative ? '#dc2626' : '#0f172a'};">${typeof formatMoney === 'function' ? formatMoney(lineTotal) : lineTotal}</td>
                 </tr>
             `;
         });
-    }
-
-    const minRows = 3;
-    const currentLen = itemsList ? itemsList.length : 0;
-    for (let i = currentLen; i < minRows; i++) {
-        rowsHTML += `
-            <tr style="border-bottom: 1px solid #f1f5f9; height: 24px;">
-                <td style="border-right: 1px solid #e2e8f0; border-left: 1px solid #e2e8f0;"></td>
-                <td style="border-right: 1px solid #e2e8f0;"></td>
-                <td style="border-right: 1px solid #e2e8f0;"></td>
-                <td style="border-right: 1px solid #e2e8f0;"></td>
-                <td style="border-right: 1px solid #e2e8f0;"></td>
-            </tr>
-        `;
     }
 
     const discount = parseFloat(getVal('discountAmount', '0')) || 0;
@@ -385,15 +394,12 @@ function buildDocumentHTML(type) {
         grandTotal = netAmount + vatAmount;
     }
 
-    let vatTableRows = '';
-    let rowspanVal = 2;
-
+    let vatRowHTML = '';
     if (vatType === 'add') {
-        rowspanVal = 3;
-        vatTableRows = `
+        vatRowHTML = `
             <tr>
-                <td style="border: 1px solid #e2e8f0; padding: 3px 6px; text-align: right; color: #475569; height: 22px;">${L.vat}</td>
-                <td style="border: 1px solid #e2e8f0; padding: 3px 6px; text-align: right; font-weight: 600; color: #0f172a;">${typeof formatMoney === 'function' ? formatMoney(vatAmount) : vatAmount}</td>
+                <td style="padding: 4px; text-align: right; color: #475569; border-bottom: 1px solid #cbd5e1;">${L.vat}</td>
+                <td style="padding: 4px; text-align: right; font-weight: 600; color: #0f172a; border-bottom: 1px solid #cbd5e1;">${typeof formatMoney === 'function' ? formatMoney(vatAmount) : vatAmount}</td>
             </tr>
         `;
     }
@@ -401,114 +407,115 @@ function buildDocumentHTML(type) {
     const bahtTxt = typeof moneyText === 'function' ? moneyText(grandTotal) : grandTotal;
 
     return `
-        <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; font-size: 10px;">
-             <div>
-                <!-- Header Section -->
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f172a; padding-bottom: 8px; margin-bottom: 10px;">
-                    <div style="width: 65%;">
-                        <h1 style="font-size: 15px; font-weight: 700; color: #0f172a; line-height: 1.1;" class="heading-font">${shopName}</h1>
-                        <p style="font-size: 9.5px; color: #475569; white-space: pre-line; margin-top: 3px; line-height: 1.3;">${shopAddress}</p>
-                        ${shopTax ? `<p style="font-size: 9.5px; color: #64748b; margin-top: 2px;">${L.tax}${shopTax}</p>` : ''}
+    <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: space-between; font-family: 'Sarabun', sans-serif; font-size: 9pt; color: #0f172a; background: #ffffff; box-sizing: border-box;">
+            <div>
+                <!-- Header -->
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f172a; padding-bottom: 8px; margin-bottom: 10px; box-sizing: border-box;">
+                    <div style="width: 60%; box-sizing: border-box;">
+                        <h1 style="font-size: 15pt; font-weight: 700; color: #0f172a; margin: 0;" class="heading-font">${shopName}</h1>
+                        <p style="font-size: 8.5pt; color: #475569; white-space: pre-line; margin: 3px 0 0 0; line-height: 1.25;">${shopAddress}</p>
+                        ${shopTax ? `<p style="font-size: 8.5pt; color: #475569; margin: 2px 0 0 0;">${L.tax}${shopTax}</p>` : ''}
                     </div>
-                    <div style="width: 35%; text-align: right;">
-                        <h2 style="font-size: 17px; font-weight: 800; color: #1e3a8a; line-height: 1;" class="heading-font">${docTitle}</h2>
-                        ${docSubTitle ? `<p style="font-size: 9px; font-weight: 700; color: #64748b; letter-spacing: 0.5px; margin-top: 2px;">${docSubTitle}</p>` : ''}
-                        <div style="margin-top: 5px; display: inline-block; background-color: #f8fafc; padding: 3px 6px; border-radius: 6px; text-align: right; border: 1px solid #e2e8f0;">
-                            <p style="font-size: 9.5px; font-weight: 700; color: #1e293b; margin: 0;">${L.no} <span style="color: #1e40af;">${docNo}</span></p>
-                            <p style="font-size: 9px; color: #64748b; margin-top: 1px;">${L.date} ${typeof fmtDate === 'function' ? fmtDate(docDate) : docDate}</p>
-                        </div>
+                    <div style="width: 38%; text-align: right; box-sizing: border-box;">
+                        <h2 style="font-size: 16pt; font-weight: 800; color: #1e3a8a; margin: 0;" class="heading-font">${docTitle}</h2>
+                        ${docSubTitle ? `<p style="font-size: 8pt; font-weight: 700; color: #64748b; margin: 1px 0 0 0;">${docSubTitle}</p>` : ''}
+                        <div style="margin-top: 4px; font-size: 9.5pt; font-weight: 700; color: #1e293b;">${L.no} <span style="color: #1e40af;">${docNo}</span></div>
+                        <div style="font-size: 8.5pt; color: #475569; margin-top: 1px;">${L.date} ${typeof fmtDate === 'function' ? fmtDate(docDate) : docDate}</div>
                     </div>
                 </div>
 
-                <!-- Customer Section -->
-                <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 8px; margin-bottom: 10px; font-size: 10px;">
-                    <div style="grid-column: span 7; background-color: #f8fafc; padding: 6px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                        <p style="font-weight: 700; color: #1e3a8a; border-bottom: 1px solid #e2e8f0; padding-bottom: 2px; margin-bottom: 3px;" class="heading-font">${L.cust}</p>
-                        <p style="font-weight: 700; color: #0f172a; font-size: 10.5px; margin: 0;">${custName}</p>
-                        <p style="color: #475569; line-height: 1.3; margin-top: 2px; white-space: pre-line;">${custAddress}</p>
+                <!-- Customer & Metadata Info -->
+                <div style="display: flex; justify-content: space-between; align-items: stretch; gap: 10px; margin-bottom: 10px; box-sizing: border-box;">
+                    <div style="width: 57%; background-color: #f8fafc; padding: 8px 10px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box;">
+                        <div style="font-weight: 700; color: #1e3a8a; border-bottom: 1px solid #cbd5e1; padding-bottom: 2px; margin-bottom: 4px; font-size: 9pt;" class="heading-font">${L.cust}</div>
+                        <div style="font-weight: 700; color: #0f172a; font-size: 9.5pt; margin: 0;">${custName}</div>
+                        <div style="color: #475569; line-height: 1.3; margin-top: 2px; white-space: pre-line; font-size: 8.5pt;">${custAddress}</div>
                     </div>
-                    <div style="grid-column: span 5; background-color: #f8fafc; padding: 6px 8px; border-radius: 6px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 2px;">
+                    <div style="width: 41%; background-color: #f8fafc; padding: 8px 10px; border-radius: 6px; border: 1px solid #cbd5e1; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box;">
+                        <div style="display: flex; justify-content: space-between; padding-bottom: 2px; border-bottom: 1px solid #e2e8f0; font-size: 8.5pt;">
                             <span style="color: #64748b;">${metaLabel1}</span>
                             <span style="font-weight: 600; color: #0f172a;">${metaVal1}</span>
                         </div>
-                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #e2e8f0; padding-bottom: 2px;">
+                        <div style="display: flex; justify-content: space-between; padding: 2px 0; border-bottom: 1px solid #e2e8f0; font-size: 8.5pt;">
                             <span style="color: #64748b;">${L.pay}</span>
                             <span style="font-weight: 600; color: #0f172a;">${paymentType}</span>
                         </div>
-                        <div style="display: flex; justify-content: space-between;">
+                        <div style="display: flex; justify-content: space-between; padding-top: 2px; font-size: 8.5pt;">
                             <span style="color: #64748b;">${L.bank}</span>
-                            <span style="font-weight: 600; color: #0f172a; font-size: 9px; text-align: right;">${shopBank}</span>
+                            <span style="font-weight: 600; color: #0f172a; font-size: 8pt; text-align: right;">${shopBank}</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Items & Summary Table -->
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 10px; table-layout: fixed;">
+                <!-- Items Table -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 8.5pt; box-sizing: border-box;">
                     <thead>
                         <tr style="background-color: #0f172a; color: #ffffff; height: 26px;">
-                            <th style="width: 8%; padding: 3px; text-align: center; border: 1px solid #0f172a;">#</th>
-                            <th style="width: 48%; padding: 3px 6px; text-align: left; border: 1px solid #0f172a;">${L.h[1]}</th>
-                            <th style="width: 12%; padding: 3px; text-align: center; border: 1px solid #0f172a;">${L.h[2]}</th>
-                            <th style="width: 16%; padding: 3px 6px; text-align: right; border: 1px solid #0f172a;">${L.h[3]}</th>
-                            <th style="width: 16%; padding: 3px 6px; text-align: right; border: 1px solid #0f172a;">${L.h[4]}</th>
+                            <th style="padding: 4px; text-align: center; border: 1px solid #0f172a; width: 6%;">#</th>
+                            <th style="padding: 4px 8px; text-align: left; border: 1px solid #0f172a; width: 48%;">${L.h[1]}</th>
+                            <th style="padding: 4px; text-align: center; border: 1px solid #0f172a; width: 10%;">${L.h[2]}</th>
+                            <th style="padding: 4px 8px; text-align: right; border: 1px solid #0f172a; width: 18%;">${L.h[3]}</th>
+                            <th style="padding: 4px 8px; text-align: right; border: 1px solid #0f172a; width: 18%;">${L.h[4]}</th>
                         </tr>
                     </thead>
                     <tbody>
                         ${rowsHTML}
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3" rowspan="${rowspanVal}" style="border: 1px solid #e2e8f0; background-color: #f8fafc; padding: 4px 6px; text-align: center; vertical-align: middle;">
-                                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
-                                    <span style="font-size: 9px; color: #475569; font-weight: 500; display: block;">${L.words}</span>
-                                    <span style="font-size: 10px; font-weight: 700; color: #1e3a8a; margin-top: 1px; display: block;">( ${bahtTxt} )</span>
-                                </div>
-                            </td>
-                            <td style="border: 1px solid #e2e8f0; padding: 3px 6px; text-align: right; color: #475569; height: 22px;">${L.sub}</td>
-                            <td style="border: 1px solid #e2e8f0; padding: 3px 6px; text-align: right; font-weight: 600; color: #0f172a;">${typeof formatMoney === 'function' ? formatMoney(subtotal) : subtotal}</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #e2e8f0; padding: 3px 6px; text-align: right; color: #475569; height: 22px;">${L.disc}</td>
-                            <td style="border: 1px solid #e2e8f0; padding: 3px 6px; text-align: right; font-weight: 600; color: #dc2626;">${discount > 0 ? `-${typeof formatMoney === 'function' ? formatMoney(discount) : discount}` : '0.00'}</td>
-                        </tr>
-                        ${vatTableRows}
-                        <tr style="background-color: #f1f5f9; font-weight: 700; height: 28px;">
-                            <td colspan="3" style="border: 1px solid #e2e8f0; background-color: #f1f5f9;"></td>
-                            <td style="border: 1px solid #e2e8f0; padding: 3px 6px; text-align: right; color: #0f172a; vertical-align: middle;">
-                                <div style="line-height: 1.1;">${L.tot}</div>
-                                <div style="font-size: 8.5px; color: #64748b; font-weight: 500;">${L.tot2}</div>
-                            </td>
-                            <td style="border: 1px solid #e2e8f0; padding: 3px 6px; text-align: right; color: #1e3a8a; font-size: 11.5px; font-weight: 800; vertical-align: middle;">
-                                ${typeof formatMoney === 'function' ? formatMoney(grandTotal) : grandTotal} ${L.cur}
-                            </td>
-                        </tr>
-                    </tfoot>
                 </table>
 
-                <!-- Terms & Warranty Block -->
-                <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 6px 8px; background-color: #f8fafc; font-size: 9px; color: #475569; margin-bottom: 10px;">
-                    <p style="font-weight: 700; color: #0f172a; margin-bottom: 2px;" class="heading-font">${L.terms}</p>
-                    <p style="white-space: pre-line; line-height: 1.3; margin: 0;">${termsText}</p>
+                <!-- Summary & Baht Text Section -->
+                <div style="display: flex; justify-content: space-between; align-items: stretch; margin-bottom: 12px; gap: 10px; box-sizing: border-box;">
+                    <div style="width: 53%; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-sizing: border-box;">
+                        <div style="font-size: 8pt; color: #475569; font-weight: 500; width: 100%;">${L.words}</div>
+                        <div style="font-size: 9pt; font-weight: 700; color: #1e3a8a; margin-top: 4px; width: 100%;">( ${bahtTxt} )</div>
+                    </div>
+                    <div style="width: 45%; box-sizing: border-box;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 8.5pt;">
+                            <tr>
+                                <td style="padding: 4px; text-align: right; color: #475569; border-bottom: 1px solid #cbd5e1;">${L.sub}</td>
+                                <td style="padding: 4px; text-align: right; font-weight: 600; color: #0f172a; border-bottom: 1px solid #cbd5e1;">${typeof formatMoney === 'function' ? formatMoney(subtotal) : subtotal}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 4px; text-align: right; color: #475569; border-bottom: 1px solid #cbd5e1;">${L.disc}</td>
+                                <td style="padding: 4px; text-align: right; font-weight: 600; color: #dc2626; border-bottom: 1px solid #cbd5e1;">${discount > 0 ? `-${typeof formatMoney === 'function' ? formatMoney(discount) : discount}` : '0.00'}</td>
+                            </tr>
+                            ${vatRowHTML}
+                            <tr style="background-color: #f1f5f9; font-weight: 700;">
+                                <td style="padding: 6px 4px; text-align: right; color: #0f172a; border-top: 2px solid #0f172a;">
+                                    <div>${L.tot}</div>
+                                    <div style="font-size: 7pt; color: #64748b; font-weight: 500;">${L.tot2}</div>
+                                </td>
+                                <td style="padding: 6px 4px; text-align: right; color: #1e3a8a; font-size: 10pt; font-weight: 800; border-top: 2px solid #0f172a;">
+                                    ${typeof formatMoney === 'function' ? formatMoney(grandTotal) : grandTotal} ${L.cur}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Terms & Conditions -->
+                <div style="border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 10px; background-color: #f8fafc; font-size: 8pt; color: #475569; box-sizing: border-box;">
+                    <div style="font-weight: 700; color: #0f172a; margin-bottom: 2px;" class="heading-font">${L.terms}</div>
+                    <div style="white-space: pre-line; line-height: 1.35;">${termsText}</div>
                 </div>
             </div>
 
             <!-- Signatures Footer -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 6px; border-top: 1px solid #cbd5e1; text-align: center; font-size: 9.5px;">
-                <div>
-                    <p style="color: #64748b; font-weight: 500; margin-bottom: 22px;">${L.on} <span style="font-weight: 700; color: #0f172a;">${shopName}</span></p>
+            <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #cbd5e1; text-align: center; font-size: 8.5pt; box-sizing: border-box; margin-top: 10px;">
+                <div style="width: 46%; box-sizing: border-box;">
+                    <div style="color: #475569; font-weight: 500; margin-bottom: 25px;">${L.on} <span style="font-weight: 700; color: #0f172a;">${shopName}</span></div>
                     <div>
-                        <p style="color: #0f172a; font-weight: 600;">${L.sign}</p>
-                        <p style="font-size: 9px; color: #64748b; margin-top: 2px;">${signLeftLabel}</p>
-                        <p style="font-size: 8.5px; color: #94a3b8; margin-top: 1px;">${L.dl}</p>
+                        <div style="color: #0f172a; font-weight: 600;">${L.sign}</div>
+                        <div style="font-size: 8pt; color: #475569; margin-top: 2px;">${signLeftLabel}</div>
+                        <div style="font-size: 7.5pt; color: #94a3b8; margin-top: 1px;">${L.dl}</div>
                     </div>
                 </div>
-                <div>
-                    <p style="color: #64748b; font-weight: 500; margin-bottom: 22px;">${L.on} <span style="font-weight: 700; color: #0f172a;">${custName}</span></p>
+                <div style="width: 46%; box-sizing: border-box;">
+                    <div style="color: #475569; font-weight: 500; margin-bottom: 25px;">${L.on} <span style="font-weight: 700; color: #0f172a;">${custName}</span></div>
                     <div>
-                        <p style="color: #0f172a; font-weight: 600;">${L.sign}</p>
-                        <p style="font-size: 9px; color: #64748b; margin-top: 2px;">${signRightLabel}</p>
-                        <p style="font-size: 8.5px; color: #94a3b8; margin-top: 1px;">${L.dl}</p>
+                        <div style="color: #0f172a; font-weight: 600;">${L.sign}</div>
+                        <div style="font-size: 8pt; color: #475569; margin-top: 2px;">${signRightLabel}</div>
+                        <div style="font-size: 7.5pt; color: #94a3b8; margin-top: 1px;">${L.dl}</div>
                     </div>
                 </div>
             </div>
@@ -531,17 +538,6 @@ function adjustZoom(delta) {
 function resetZoom() {
     zoomScale = 1.0;
     applyZoom();
-}
-
-function applyZoom() {
-    const page = document.getElementById('documentPrintArea');
-    if (page) {
-        page.style.transform = `scale(${zoomScale})`;
-    }
-    const zoomText = document.getElementById('zoomLevelText');
-    if (zoomText) {
-        zoomText.innerText = `${Math.round(zoomScale * 100)}%`;
-    }
 }
 
 function openFullscreenPreview() {
